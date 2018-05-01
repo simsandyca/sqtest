@@ -1,0 +1,50 @@
+//
+// This project has a single java source which is 75 lines long.
+//  After upgrade to sonarqube server 6.7.1 lts, running the scanner on this file
+//  takes upwards of 5 minutes.  The scanner report generated will be so big that it 
+//  will fail after being uploaded to the server. 
+
+// We tried several things to work around this: 
+//   - increased the max_allowed_packet to 1GB 
+//   - increased the innodb redo log size 
+//   - added ram to the system and increased the innodb_buffer_pool_size to 2G
+//
+//  Ultimately, I found that the issues proto buffer file for this source in the scanner-report 
+//   was over 550MB.  So I excluded the file and now the analysis works. 
+//
+//  I've tried to trim this down to just the trouble spot - the report generated is still 
+//  big enough to crash out the CE process.  The scanner takes about 5 minutes run which seems like a 
+//  long time for 75 lines of code. 
+//
+//  To run the test case:  
+//  - unpack this tarball 
+//  - cd sqtest
+//  - update the gradle.properties to point at a sonarqube 6.7.1 server and set a token if required
+//  - ./gradlew sonarqube
+//
+plugins {
+  id "org.sonarqube" version "2.6.2"
+}
+repositories {
+    flatDir {
+        dirs 'lib'
+    }
+}
+apply plugin: 'java'
+dependencies {
+    compile name: 'turn-1.0'
+    compile name: 'hibernate-core-3.5.6-Final'
+}
+sonarqube {
+    properties {
+        property "sonar.projectKey", project.name
+        property "sonar.binaries", "build/classes/main"
+        property "sonar.groovy.binaries", "build/classes/main"
+        property "sonar.groovy.test.binaries" , "build/classes/test"
+        property "sonar.projectName", project.name
+        property "sonar.log.level", "DEBUG"
+        property "sonar.verbose", "true"
+        property "sonar.showProfiling", "true"
+    }
+}
+

@@ -1,0 +1,69 @@
+2018.03.05 16:13:59 INFO  ce[AWH4qFfSQTp63ICSTVG_][o.s.c.t.CeWorkerImpl] Execute task | project=sqtest | type=REPORT | id=AWH4qFfSQTp63ICSTVG_ | submitter=dhanle
+2018.03.05 16:14:00 WARN  ce[AWH4qFfSQTp63ICSTVG_][o.s.s.c.t.p.d.IntegrateCrossProjectDuplications] This analysis uses the deprecated cross-project duplication feature.
+2018.03.05 16:14:24 ERROR ce[AWH4qFfSQTp63ICSTVG_][o.s.c.t.CeWorkerImpl] Failed to execute task AWH4qFfSQTp63ICSTVG_
+org.apache.ibatis.exceptions.PersistenceException: 
+### Error flushing statements.  Cause: org.apache.ibatis.executor.BatchExecutorException: org.sonar.db.issue.IssueMapper.insert (batch index #1) failed. Cause: java.sql.BatchUpdateException: The size of BLOB/TEXT data inserted in one transaction is greater than 10% of redo log size. Increase the redo log size using innodb_log_file_size.
+### Cause: org.apache.ibatis.executor.BatchExecutorException: org.sonar.db.issue.IssueMapper.insert (batch index #1) failed. Cause: java.sql.BatchUpdateException: The size of BLOB/TEXT data inserted in one transaction is greater than 10% of redo log size. Increase the redo log size using innodb_log_file_size.
+	at org.apache.ibatis.exceptions.ExceptionFactory.wrapException(ExceptionFactory.java:30)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.flushStatements(DefaultSqlSession.java:255)
+	at org.sonar.db.DbSessionImpl.flushStatements(DbSessionImpl.java:167)
+	at org.sonar.db.BatchSession.flushStatements(BatchSession.java:192)
+	at org.sonar.server.computation.task.projectanalysis.step.PersistIssuesStep.execute(PersistIssuesStep.java:67)
+	at org.sonar.server.computation.task.step.ComputationStepExecutor.executeSteps(ComputationStepExecutor.java:64)
+	at org.sonar.server.computation.task.step.ComputationStepExecutor.execute(ComputationStepExecutor.java:52)
+	at org.sonar.server.computation.task.projectanalysis.taskprocessor.ReportTaskProcessor.process(ReportTaskProcessor.java:73)
+	at org.sonar.ce.taskprocessor.CeWorkerImpl.executeTask(CeWorkerImpl.java:134)
+	at org.sonar.ce.taskprocessor.CeWorkerImpl.findAndProcessTask(CeWorkerImpl.java:97)
+	at org.sonar.ce.taskprocessor.CeWorkerImpl.withCustomizedThreadName(CeWorkerImpl.java:81)
+	at org.sonar.ce.taskprocessor.CeWorkerImpl.call(CeWorkerImpl.java:73)
+	at org.sonar.ce.taskprocessor.CeWorkerImpl.call(CeWorkerImpl.java:43)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: org.apache.ibatis.executor.BatchExecutorException: org.sonar.db.issue.IssueMapper.insert (batch index #1) failed. Cause: java.sql.BatchUpdateException: The size of BLOB/TEXT data inserted in one transaction is greater than 10% of redo log size. Increase the redo log size using innodb_log_file_size.
+	at org.apache.ibatis.executor.BatchExecutor.doFlushStatements(BatchExecutor.java:146)
+	at org.apache.ibatis.executor.BaseExecutor.flushStatements(BaseExecutor.java:129)
+	at org.apache.ibatis.executor.BaseExecutor.flushStatements(BaseExecutor.java:122)
+	at org.apache.ibatis.executor.CachingExecutor.flushStatements(CachingExecutor.java:114)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.flushStatements(DefaultSqlSession.java:253)
+	... 19 common frames omitted
+Caused by: java.sql.BatchUpdateException: The size of BLOB/TEXT data inserted in one transaction is greater than 10% of redo log size. Increase the redo log size using innodb_log_file_size.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.Util.getInstance(Util.java:408)
+	at com.mysql.jdbc.SQLError.createBatchUpdateException(SQLError.java:1162)
+	at com.mysql.jdbc.PreparedStatement.executeBatchedInserts(PreparedStatement.java:1587)
+	at com.mysql.jdbc.PreparedStatement.executeBatchInternal(PreparedStatement.java:1253)
+	at com.mysql.jdbc.StatementImpl.executeBatch(StatementImpl.java:970)
+	at org.apache.commons.dbcp.DelegatingStatement.executeBatch(DelegatingStatement.java:297)
+	at org.apache.commons.dbcp.DelegatingStatement.executeBatch(DelegatingStatement.java:297)
+	at org.apache.ibatis.executor.BatchExecutor.doFlushStatements(BatchExecutor.java:122)
+	... 23 common frames omitted
+Caused by: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: The size of BLOB/TEXT data inserted in one transaction is greater than 10% of redo log size. Increase the redo log size using innodb_log_file_size.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.Util.getInstance(Util.java:408)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:943)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3973)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3909)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2527)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2680)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2490)
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:1858)
+	at com.mysql.jdbc.PreparedStatement.executeUpdateInternal(PreparedStatement.java:2079)
+	at com.mysql.jdbc.PreparedStatement.executeUpdateInternal(PreparedStatement.java:2013)
+	at com.mysql.jdbc.PreparedStatement.executeLargeUpdate(PreparedStatement.java:5104)
+	at com.mysql.jdbc.PreparedStatement.executeBatchedInserts(PreparedStatement.java:1548)
+	... 28 common frames omitted
+2018.03.05 16:14:24 ERROR ce[AWH4qFfSQTp63ICSTVG_][o.s.c.t.CeWorkerImpl] Executed task | project=sqtest | type=REPORT | id=AWH4qFfSQTp63ICSTVG_ | submitter=dhanle | time=25771ms
